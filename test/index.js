@@ -13,6 +13,9 @@ function read(file) {
 test('argument.js - parameters from inline arguments', function () {
   assert.deepEqual(detect(read('argument.js')), []);
 });
+test('arrow_functions.js - arguments of arrow functions are not globals', function () {
+  assert.deepEqual(detect(read('arrow_functions.js')).map(function (node) { return node.name; }), ['z']);
+});
 test('assign_implicit.js - assign from an implicit global', function () {
   assert.deepEqual(detect(read('assign_implicit.js')).map(function (node) { return node.name; }), ['bar']);
 });

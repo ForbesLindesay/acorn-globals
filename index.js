@@ -58,7 +58,7 @@ function findGlobals(source) {
       parent.locals[node.id.name] = true;
       declareFunction(node);
     },
-    'FunctionExpression': declareFunction,
+    'Function': declareFunction,
     'TryStatement': function (node) {
       node.handler.body.locals = node.handler.body.locals || {};
       node.handler.body.locals[node.handler.param.name] = true;
