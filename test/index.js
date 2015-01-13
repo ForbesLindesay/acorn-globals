@@ -9,6 +9,7 @@ var detect = require('../');
 function read(file) {
   return fs.readFileSync(path.resolve(__dirname + '/fixtures/', file), 'utf8');
 }
+// console.dir(require('acorn').parse(read('export.js'), {ecmaVersion: 6}).body);
 
 test('argument.js - parameters from inline arguments', function () {
   assert.deepEqual(detect(read('argument.js')), []);
@@ -22,6 +23,12 @@ test('assign_implicit.js - assign from an implicit global', function () {
 test('detect.js - check locals and globals', function () {
   assert.deepEqual(detect(read('detect.js')).map(function (node) { return node.name; }),
                    ['w', 'foo', 'process', 'console', 'AAA', 'BBB', 'CCC', 'xyz', 'ZZZ', 'BLARG', 'RAWR'].sort());
+});
+test('export.js - Anything that has been imported is not a global', function () {
+  assert.deepEqual(detect(read('export.js')).map(function (node) { return node.name; }), []);
+});
+test('import.js - Anything that has been imported is not a global', function () {
+  assert.deepEqual(detect(read('import.js')).map(function (node) { return node.name; }), []);
 });
 test('labels.js - labels for while loops are not globals', function () {
   assert.deepEqual(detect(read('labels.js')), []);
