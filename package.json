@@ -1,9 +1,21 @@
 {
   "name": "acorn-globals",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Detect global variables in JavaScript using acorn",
-  "keywords": ["ast", "variable", "name", "lexical", "scope", "local", "global", "implicit"],
-  "files": ["index.js", "LICENSE"],
+  "keywords": [
+    "ast",
+    "variable",
+    "name",
+    "lexical",
+    "scope",
+    "local",
+    "global",
+    "implicit"
+  ],
+  "files": [
+    "index.js",
+    "LICENSE"
+  ],
   "dependencies": {
     "acorn": "^0.11.0"
   },
