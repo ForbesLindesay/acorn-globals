@@ -16,6 +16,37 @@ walk.base.ImportSpecifier = function (node, st, c) {
 };
 walk.base.ImportBatchSpecifier = function (node, st, c) {
 };
+// An ancestor walk builds up an array of ancestor nodes (including
+// the current node) and passes them to the callback as the state parameter.
+function ancestor(node, visitors, base, state) {
+  if (!base) base = walk.base;
+  if (!state) state = [];
+  var stack = [[{node: node, st: state, override: ''}]];
+  while (stack.length) {
+    var queue = stack[stack.length - 1];
+    var next = queue.shift();
+    node = next.node;
+    var st = next.st;
+    var override = next.override;
+    if (queue.length === 0) {
+      stack.pop();
+    }
+    var type = override || node.type, found = visitors[type];
+    if (node != st[st.length - 1]) {
+      st = st.slice();
+      st.push(node);
+    }
+    var queue = [];
+    base[type](node, st, function (node, st, override) {
+      queue.push({node: node, st: st, override: override || ''});
+    });
+    if (queue.length) {
+      stack.push(queue);
+    }
+    if (found) found(node, st);
+  }
+};
+walk.ancestor = ancestor;
 
 function isScope(node) {
   return node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration' || node.type === 'Program';
