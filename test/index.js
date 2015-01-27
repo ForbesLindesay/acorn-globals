@@ -54,7 +54,7 @@ test('try_catch.js - the exception in a try catch block is a local', function ()
 
 test('a really long string of addition', function () {
   var as = [];
-  var count = 8000;
+  var count = 5000;
   for (var i = 0; i < count; i++) {
     as.push('a');
   }
