@@ -51,3 +51,13 @@ test('right_hand.js - globals on the right-hand of assignment', function () {
 test('try_catch.js - the exception in a try catch block is a local', function () {
   assert.deepEqual(detect(read('try_catch.js')), []);
 });
+
+test('a really long string of addition', function () {
+  var as = [];
+  var count = 8000;
+  for (var i = 0; i < count; i++) {
+    as.push('a');
+  }
+  assert(Function('a', 'return ' + as.join('+'))(1) === count);
+  assert.deepEqual(detect(as.join('+')).map(function (node) { return node.name; }), ['a']);
+});
