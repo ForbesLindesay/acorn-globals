@@ -42,6 +42,9 @@ test('named_arg.js - named argument / parameter', function () {
 test('obj.js - globals on the right-hand of a colon in an object literal', function () {
   assert.deepEqual(detect(read('obj.js')).map(function (node) { return node.name; }), ['bar', 'module']);
 });
+test('reserved-words.js - check we do not force into strict mode', function () {
+  assert.deepEqual(detect(read('reserved-words.js')).map(function (node) { return node.name; }), ['console']);
+});
 test('return_hash.js - named argument / parameter', function () {
   assert.deepEqual(detect(read('return_hash.js')), []);
 });
