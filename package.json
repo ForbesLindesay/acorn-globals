@@ -17,18 +17,15 @@
     "LICENSE"
   ],
   "dependencies": {
-    "acorn": "^1.0.1"
+    "acorn": "^1.0.3"
   },
   "devDependencies": {
-    "testit": "^1.2.0"
+    "testit": "^2.0.2"
   },
   "scripts": {
     "test": "node test"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ForbesLindesay/acorn-globals.git"
-  },
+  "repository": "ForbesLindesay/acorn-globals",
   "author": "ForbesLindesay",
   "license": "MIT"
 }
