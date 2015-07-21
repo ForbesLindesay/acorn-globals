@@ -17,10 +17,10 @@
     "LICENSE"
   ],
   "dependencies": {
-    "acorn": "^1.0.1"
+    "acorn": "^2.1.0"
   },
   "devDependencies": {
-    "testit": "^1.2.0"
+    "testit": "^2.0.2"
   },
   "scripts": {
     "test": "node test"

@@ -9,7 +9,6 @@ var detect = require('../');
 function read(file) {
   return fs.readFileSync(path.resolve(__dirname + '/fixtures/', file), 'utf8');
 }
-// console.dir(require('acorn').parse(read('export.js'), {ecmaVersion: 6}).body);
 
 test('argument.js - parameters from inline arguments', function () {
   assert.deepEqual(detect(read('argument.js')), []);
