@@ -11,7 +11,7 @@ function isBlockScope(node) {
 }
 
 function declaresArguments(node) {
-  return node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration' || node.type === 'ArrowFunction';
+  return node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration';
 }
 function declaresThis(node) {
   return node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration';
