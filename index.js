@@ -69,6 +69,9 @@ function findGlobals(source) {
           if (node) declarePattern(node, parent);
         });
         break;
+      case 'RestElement':
+        declarePattern(node.argument, parent);
+        break;
       case 'AssignmentPattern':
         declarePattern(node.left, parent);
         break;
