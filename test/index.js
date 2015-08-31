@@ -19,6 +19,12 @@ test('arrow_functions.js - arguments of arrow functions are not globals', functi
 test('assign_implicit.js - assign from an implicit global', function () {
   assert.deepEqual(detect(read('assign_implicit.js')).map(function (node) { return node.name; }), ['bar']);
 });
+test('default-argument.js - ES2015 default argument', function () {
+  assert.deepEqual(detect(read('default-argument.js')).map(function (node) { return node.name; }), ['c', 'h', 'j', 'k']);
+});
+test('destructuring.js - ES2015 variable destructuring', function () {
+  assert.deepEqual(detect(read('destructuring.js')).map(function (node) { return node.name; }), ['g']);
+});
 test('detect.js - check locals and globals', function () {
   assert.deepEqual(detect(read('detect.js')).map(function (node) { return node.name; }),
                    ['w', 'foo', 'process', 'console', 'AAA', 'BBB', 'CCC', 'xyz', 'ZZZ', 'BLARG', 'RAWR'].sort());

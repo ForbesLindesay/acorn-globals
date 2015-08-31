@@ -48,10 +48,32 @@ function findGlobals(source) {
     var fn = node;
     fn.locals = fn.locals || {};
     node.params.forEach(function (node) {
-      fn.locals[node.name] = true;
+      declarePattern(node, fn);
     });
     if (node.id) {
       fn.locals[node.id.name] = true;
+    }
+  }
+  var declarePattern = function (node, parent) {
+    switch (node.type) {
+      case 'Identifier':
+        parent.locals[node.name] = true;
+        break;
+      case 'ObjectPattern':
+        node.properties.forEach(function (node) {
+          declarePattern(node.value, parent);
+        });
+        break;
+      case 'ArrayPattern':
+        node.elements.forEach(function (node) {
+          if (node) declarePattern(node, parent);
+        });
+        break;
+      case 'AssignmentPattern':
+        declarePattern(node.left, parent);
+        break;
+      default:
+        throw new Error('Unrecognized pattern type: ' + node.type);
     }
   }
   walk.ancestor(ast, {
@@ -64,7 +86,7 @@ function findGlobals(source) {
       }
       parent.locals = parent.locals || {};
       node.declarations.forEach(function (declaration) {
-        parent.locals[declaration.id.name] = true;
+        declarePattern(declaration.id, parent);
       });
     },
     'FunctionDeclaration': function (node, parents) {
