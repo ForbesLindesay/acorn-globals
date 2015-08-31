@@ -19,6 +19,9 @@ test('arrow_functions.js - arguments of arrow functions are not globals', functi
 test('assign_implicit.js - assign from an implicit global', function () {
   assert.deepEqual(detect(read('assign_implicit.js')).map(function (node) { return node.name; }), ['bar']);
 });
+test('class.js - ES2015 classes', function () {
+  assert.deepEqual(detect(read('class.js')).map(function (node) { return node.name; }), ['OtherClass_', 'SuperClass']);
+});
 test('default-argument.js - ES2015 default argument', function () {
   assert.deepEqual(detect(read('default-argument.js')).map(function (node) { return node.name; }), ['c', 'h', 'j', 'k']);
 });

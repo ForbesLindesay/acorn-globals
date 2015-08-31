@@ -104,6 +104,16 @@ function findGlobals(source) {
       declareFunction(node);
     },
     'Function': declareFunction,
+    'ClassDeclaration': function (node, parents) {
+      var parent = null;
+      for (var i = parents.length - 2; i >= 0 && parent === null; i--) {
+        if (isScope(parents[i])) {
+          parent = parents[i];
+        }
+      }
+      parent.locals = parent.locals || {};
+      parent.locals[node.id.name] = true;
+    },
     'TryStatement': function (node) {
       node.handler.body.locals = node.handler.body.locals || {};
       node.handler.body.locals[node.handler.param.name] = true;
