@@ -126,10 +126,9 @@ function findGlobals(source) {
       }
     },
     'ImportSpecifier': function (node) {
-      var id = node.local ? node.local : node.imported;
-      if (id.type === 'Identifier') {
+      if (node.local.type === 'Identifier') {
         ast.locals = ast.locals || {};
-        ast.locals[id.name] = true;
+        ast.locals[node.local.name] = true;
       }
     },
     'ImportNamespaceSpecifier': function (node) {
