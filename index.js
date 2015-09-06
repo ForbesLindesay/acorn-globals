@@ -11,7 +11,7 @@ function isBlockScope(node) {
 }
 
 function declaresArguments(node) {
-  return node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration' || node.type === 'ArrowFunction';
+  return node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration';
 }
 function declaresThis(node) {
   return node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration';
@@ -48,10 +48,35 @@ function findGlobals(source) {
     var fn = node;
     fn.locals = fn.locals || {};
     node.params.forEach(function (node) {
-      fn.locals[node.name] = true;
+      declarePattern(node, fn);
     });
     if (node.id) {
       fn.locals[node.id.name] = true;
+    }
+  }
+  var declarePattern = function (node, parent) {
+    switch (node.type) {
+      case 'Identifier':
+        parent.locals[node.name] = true;
+        break;
+      case 'ObjectPattern':
+        node.properties.forEach(function (node) {
+          declarePattern(node.value, parent);
+        });
+        break;
+      case 'ArrayPattern':
+        node.elements.forEach(function (node) {
+          if (node) declarePattern(node, parent);
+        });
+        break;
+      case 'RestElement':
+        declarePattern(node.argument, parent);
+        break;
+      case 'AssignmentPattern':
+        declarePattern(node.left, parent);
+        break;
+      default:
+        throw new Error('Unrecognized pattern type: ' + node.type);
     }
   }
   walk.ancestor(ast, {
@@ -64,7 +89,7 @@ function findGlobals(source) {
       }
       parent.locals = parent.locals || {};
       node.declarations.forEach(function (declaration) {
-        parent.locals[declaration.id.name] = true;
+        declarePattern(declaration.id, parent);
       });
     },
     'FunctionDeclaration': function (node, parents) {
@@ -79,6 +104,16 @@ function findGlobals(source) {
       declareFunction(node);
     },
     'Function': declareFunction,
+    'ClassDeclaration': function (node, parents) {
+      var parent = null;
+      for (var i = parents.length - 2; i >= 0 && parent === null; i--) {
+        if (isScope(parents[i])) {
+          parent = parents[i];
+        }
+      }
+      parent.locals = parent.locals || {};
+      parent.locals[node.id.name] = true;
+    },
     'TryStatement': function (node) {
       node.handler.body.locals = node.handler.body.locals || {};
       node.handler.body.locals[node.handler.param.name] = true;

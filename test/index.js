@@ -19,6 +19,15 @@ test('arrow_functions.js - arguments of arrow functions are not globals', functi
 test('assign_implicit.js - assign from an implicit global', function () {
   assert.deepEqual(detect(read('assign_implicit.js')).map(function (node) { return node.name; }), ['bar']);
 });
+test('class.js - ES2015 classes', function () {
+  assert.deepEqual(detect(read('class.js')).map(function (node) { return node.name; }), ['OtherClass_', 'SuperClass']);
+});
+test('default-argument.js - ES2015 default argument', function () {
+  assert.deepEqual(detect(read('default-argument.js')).map(function (node) { return node.name; }), ['c', 'h', 'j', 'k']);
+});
+test('destructuring.js - ES2015 variable destructuring', function () {
+  assert.deepEqual(detect(read('destructuring.js')).map(function (node) { return node.name; }), ['g']);
+});
 test('detect.js - check locals and globals', function () {
   assert.deepEqual(detect(read('detect.js')).map(function (node) { return node.name; }),
                    ['w', 'foo', 'process', 'console', 'AAA', 'BBB', 'CCC', 'xyz', 'ZZZ', 'BLARG', 'RAWR'].sort());
@@ -43,6 +52,9 @@ test('obj.js - globals on the right-hand of a colon in an object literal', funct
 });
 test('reserved-words.js - check we do not force into strict mode', function () {
   assert.deepEqual(detect(read('reserved-words.js')).map(function (node) { return node.name; }), ['console']);
+});
+test('rest-argument.js - ES2015 rest argument', function () {
+  assert.deepEqual(detect(read('rest-argument.js')), []);
 });
 test('return_hash.js - named argument / parameter', function () {
   assert.deepEqual(detect(read('return_hash.js')), []);
