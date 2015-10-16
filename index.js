@@ -115,7 +115,7 @@ function findGlobals(source) {
       parent.locals[node.id.name] = true;
     },
     'TryStatement': function (node) {
-      if(node.handler === null) return;
+      if (node.handler === null) return;
       node.handler.body.locals = node.handler.body.locals || {};
       node.handler.body.locals[node.handler.param.name] = true;
     },
