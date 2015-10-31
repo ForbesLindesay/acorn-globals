@@ -79,6 +79,12 @@ function findGlobals(source) {
         throw new Error('Unrecognized pattern type: ' + node.type);
     }
   }
+  var declareModuleSpecifier = function (node, parents) {
+    if (node.local.type === 'Identifier') {
+      ast.locals = ast.locals || {};
+      ast.locals[node.local.name] = true;
+    }
+  }
   walk.ancestor(ast, {
     'VariableDeclaration': function (node, parents) {
       var parent = null;
@@ -119,24 +125,9 @@ function findGlobals(source) {
       node.handler.body.locals = node.handler.body.locals || {};
       node.handler.body.locals[node.handler.param.name] = true;
     },
-    'ImportDefaultSpecifier': function (node) {
-      if (node.local.type === 'Identifier') {
-        ast.locals = ast.locals || {};
-        ast.locals[node.local.name] = true;
-      }
-    },
-    'ImportSpecifier': function (node) {
-      if (node.local.type === 'Identifier') {
-        ast.locals = ast.locals || {};
-        ast.locals[node.local.name] = true;
-      }
-    },
-    'ImportNamespaceSpecifier': function (node) {
-      if (node.local.type === 'Identifier') {
-        ast.locals = ast.locals || {};
-        ast.locals[node.local.name] = true;
-      }
-    }
+    'ImportDefaultSpecifier': declareModuleSpecifier,
+    'ImportSpecifier': declareModuleSpecifier,
+    'ImportNamespaceSpecifier': declareModuleSpecifier
   });
   function identifier(node, parents) {
     var name = node.name;
