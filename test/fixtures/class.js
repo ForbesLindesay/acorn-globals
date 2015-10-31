@@ -22,3 +22,4 @@ var OtherClass = class OtherClass_ extends MyClass {
     }
 }
 OtherClass_;
+this;
