@@ -4,7 +4,7 @@ var acorn = require('acorn');
 var walk = require('acorn/dist/walk');
 
 function isScope(node) {
-  return node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration' || node.type === 'Program';
+  return node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration' || node.type === 'ArrowFunctionExpression' || node.type === 'Program';
 }
 function isBlockScope(node) {
   return node.type === 'BlockStatement' || isScope(node);
