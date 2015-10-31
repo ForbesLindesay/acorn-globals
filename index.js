@@ -170,10 +170,8 @@ function findGlobals(source) {
   });
   var groupedGlobals = {};
   globals.forEach(function (node) {
-    var name = node.name;
-    if (node.type === 'ThisExpression') name = 'this';
-    groupedGlobals[name] = (groupedGlobals[name] || []);
-    groupedGlobals[name].push(node);
+    groupedGlobals[node.name] = (groupedGlobals[node.name] || []);
+    groupedGlobals[node.name].push(node);
   });
   return Object.keys(groupedGlobals).sort().map(function (name) {
     return {name: name, nodes: groupedGlobals[name]};
