@@ -4,4 +4,9 @@ function foo() {
   } catch (ex) {
     foo(ex)
   }
+  try {
+
+  } finally {
+
+  }
 }

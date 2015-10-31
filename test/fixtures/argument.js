@@ -4,3 +4,7 @@ function foo () {
         a = c;
     };
 }
+
+function bar () {
+    arguments;
+}

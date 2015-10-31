@@ -21,5 +21,12 @@ var OtherClass = class OtherClass_ extends MyClass {
         this.f = f;
     }
 }
+
+{
+    class G {
+        constructor() {}
+    };
+}
 OtherClass_;
 this;
+G;

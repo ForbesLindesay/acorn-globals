@@ -38,9 +38,14 @@ module.exports = findGlobals;
 module.exports.parse = reallyParse;
 function findGlobals(source) {
   var globals = [];
-  var ast = typeof source === 'string' ?
-    ast = reallyParse(source) :
-    source;
+  var ast;
+  // istanbul ignore else
+  if (typeof source === 'string') {
+    ast = reallyParse(source);
+  } else {
+    ast = source;
+  }
+  // istanbul ignore if
   if (!(ast && typeof ast === 'object' && ast.type === 'Program')) {
     throw new TypeError('Source must be either a string of JavaScript or an acorn AST');
   }
@@ -75,6 +80,7 @@ function findGlobals(source) {
       case 'AssignmentPattern':
         declarePattern(node.left, parent);
         break;
+      // istanbul ignore next
       default:
         throw new Error('Unrecognized pattern type: ' + node.type);
     }
