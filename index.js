@@ -80,10 +80,8 @@ function findGlobals(source) {
     }
   }
   var declareModuleSpecifier = function (node, parents) {
-    if (node.local.type === 'Identifier') {
-      ast.locals = ast.locals || {};
-      ast.locals[node.local.name] = true;
-    }
+    ast.locals = ast.locals || {};
+    ast.locals[node.local.name] = true;
   }
   walk.ancestor(ast, {
     'VariableDeclaration': function (node, parents) {
