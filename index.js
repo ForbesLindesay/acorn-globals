@@ -13,9 +13,6 @@ function isBlockScope(node) {
 function declaresArguments(node) {
   return node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration';
 }
-function declaresThis(node) {
-  return node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration';
-}
 
 function reallyParse(source) {
   try {
@@ -157,16 +154,7 @@ function findGlobals(source) {
   }
   walk.ancestor(ast, {
     'VariablePattern': identifier,
-    'Identifier': identifier,
-    'ThisExpression': function (node, parents) {
-      for (var i = 0; i < parents.length; i++) {
-        if (declaresThis(parents[i])) {
-          return;
-        }
-      }
-      node.parents = parents;
-      globals.push(node);
-    }
+    'Identifier': identifier
   });
   var groupedGlobals = {};
   globals.forEach(function (node) {
