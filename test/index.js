@@ -36,7 +36,7 @@ test('export.js - Anything that has been imported is not a global', function () 
   assert.deepEqual(detect(read('export.js')).map(function (node) { return node.name; }), []);
 });
 test('import.js - Anything that has been imported is not a global', function () {
-  assert.deepEqual(detect(read('import.js')).map(function (node) { return node.name; }), []);
+  assert.deepEqual(detect(read('import.js')).map(function (node) { return node.name; }), ['whatever']);
 });
 test('labels.js - labels for while loops are not globals', function () {
   assert.deepEqual(detect(read('labels.js')), []);
