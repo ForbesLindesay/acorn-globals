@@ -1,6 +1,6 @@
 {
   "name": "acorn-globals",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Detect global variables in JavaScript using acorn",
   "keywords": [
     "ast",
