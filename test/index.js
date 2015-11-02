@@ -20,8 +20,7 @@ test('assign_implicit.js - assign from an implicit global', function () {
   assert.deepEqual(detect(read('assign_implicit.js')).map(function (node) { return node.name; }), ['bar']);
 });
 test('class.js - ES2015 classes', function () {
-  // TODO: `'undefined'` should be `this` but preserved for backwards compatability
-  assert.deepEqual(detect(read('class.js')).map(function (node) { return node.name; }), ['OtherClass_', 'SuperClass', 'undefined'].sort());
+  assert.deepEqual(detect(read('class.js')).map(function (node) { return node.name; }), ['OtherClass_', 'SuperClass', 'this'].sort());
 });
 test('default-argument.js - ES2015 default argument', function () {
   assert.deepEqual(detect(read('default-argument.js')).map(function (node) { return node.name; }), ['c', 'h', 'j', 'k']);
@@ -67,6 +66,5 @@ test('try_catch.js - the exception in a try catch block is a local', function ()
   assert.deepEqual(detect(read('try_catch.js')), []);
 });
 test('this.js - `this` is considered a global', function () {
-  // TODO: `'undefined'` should be `this` but preserved for backwards compatability
-  assert.deepEqual(detect(read('this.js')).map(function (node) { return node.name; }), ['undefined']);
+  assert.deepEqual(detect(read('this.js')).map(function (node) { return node.name; }), ['this']);
 });
