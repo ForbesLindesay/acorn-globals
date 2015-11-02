@@ -171,8 +171,9 @@ function findGlobals(source) {
   });
   var groupedGlobals = {};
   globals.forEach(function (node) {
-    groupedGlobals[node.name] = (groupedGlobals[node.name] || []);
-    groupedGlobals[node.name].push(node);
+    var name = node.type === 'ThisExpression' ? 'this' : node.name;
+    groupedGlobals[name] = (groupedGlobals[name] || []);
+    groupedGlobals[name].push(node);
   });
   return Object.keys(groupedGlobals).sort().map(function (name) {
     return {name: name, nodes: groupedGlobals[name]};
