@@ -37,9 +37,13 @@ function reallyParse(source) {
 }
 module.exports = findGlobals;
 module.exports.parse = reallyParse;
-function findGlobals(source) {
+function findGlobals(source, options) {
   var globals = [];
   var ast;
+
+  options = options || {};
+  options.includeFileVars = options.includeFileVars || false;
+
   // istanbul ignore else
   if (typeof source === 'string') {
     ast = reallyParse(source);
@@ -141,8 +145,10 @@ function findGlobals(source) {
       if (name === 'arguments' && declaresArguments(parents[i])) {
         return;
       }
-      if (parents[i].locals && name in parents[i].locals) {
-        return;
+      if (!(options.includeFileVars && parents[i].type === 'Program')) {
+        if (parents[i].locals && name in parents[i].locals) {
+          return;
+        }
       }
     }
     if (
