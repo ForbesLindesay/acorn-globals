@@ -20,7 +20,8 @@ var detect = require('acorn-globals');
 
 var src = fs.readFileSync(__dirname + '/input.js', 'utf8');
 
-var scope = detect(src, {includeFileVars: false});
+var options = {};
+var scope = detect(src, options);
 console.dir(scope);
 ```
 
