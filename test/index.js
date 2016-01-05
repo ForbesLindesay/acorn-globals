@@ -33,6 +33,8 @@ test('detect.js - check locals and globals', function () {
                    ['w', 'foo', 'process', 'console', 'AAA', 'BBB', 'CCC', 'xyz', 'ZZZ', 'BLARG', 'RAWR'].sort());
   assert.deepEqual(detect(read('detect.js'), {includeFileVars: true}).map(function (node) { return node.name; }),
                    ['w', 'x', 'y', 'z', 'foo', 'process', 'console', 'AAA', 'BBB', 'CCC', 'xyz', 'ZZZ', 'BLARG', 'RAWR'].sort());
+  assert.deepEqual(detect(read('detect.js'), {includeFileVars: true, includeFunctionDeclarations: true}).map(function (node) { return node.name; }),
+                   ['w', 'x', 'y', 'z', 'foo', 'process', 'console', 'AAA', 'BBB', 'CCC', 'xyz', 'ZZZ', 'BLARG', 'RAWR', 'beep'].sort());
 });
 test('export.js - Anything that has been imported is not a global', function () {
   assert.deepEqual(detect(read('export.js')).map(function (node) { return node.name; }), ['baz']);

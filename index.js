@@ -43,6 +43,7 @@ function findGlobals(source, options) {
 
   options = options || {};
   options.includeFileVars = options.includeFileVars || false;
+  options.includeFunctionDeclarations = options.includeFunctionDeclarations || false;
 
   // istanbul ignore else
   if (typeof source === 'string') {
@@ -145,7 +146,10 @@ function findGlobals(source, options) {
       if (name === 'arguments' && declaresArguments(parents[i])) {
         return;
       }
-      if (!(options.includeFileVars && parents[i].type === 'Program')) {
+
+      var parentIsGlobalScopeAndEnabled = (options.includeFileVars && parents[i].type === 'Program');
+      var parentIsFunctionDeclarationAndEnabled = (options.includeFunctionDeclarations && parents[i].type === 'FunctionDeclaration' && i === parents.length - 2 && node === parents[i].id);
+      if (!parentIsGlobalScopeAndEnabled && !parentIsFunctionDeclarationAndEnabled) {
         if (parents[i].locals && name in parents[i].locals) {
           return;
         }

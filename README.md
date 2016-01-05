@@ -79,6 +79,12 @@ $ node example/detect.js
     Include variables declared in the file scope of the JavaScript file.
     This is useful when using modules that are not automatically wrapped in a closure.
 
+  - `includeFunctionDeclarations`
+
+    Default: `false`
+
+    Include function definitions in the list of globals. Use with `includeFileVars`.
+
 ## License
 
   MIT
