@@ -19,21 +19,11 @@ function declaresThis(node) {
 }
 
 function reallyParse(source) {
-  try {
-    return acorn.parse(source, {
-      ecmaVersion: 6,
-      allowReturnOutsideFunction: true,
-      allowImportExportEverywhere: true,
-      allowHashBang: true
-    });
-  } catch (ex) {
-    return acorn.parse(source, {
-      ecmaVersion: 5,
-      allowReturnOutsideFunction: true,
-      allowImportExportEverywhere: true,
-      allowHashBang: true
-    });
-  }
+  return acorn.parse(source, {
+    allowReturnOutsideFunction: true,
+    allowImportExportEverywhere: true,
+    allowHashBang: true
+  });
 }
 module.exports = findGlobals;
 module.exports.parse = reallyParse;
@@ -127,8 +117,8 @@ function findGlobals(source) {
     },
     'TryStatement': function (node) {
       if (node.handler === null) return;
-      node.handler.body.locals = node.handler.body.locals || {};
-      node.handler.body.locals[node.handler.param.name] = true;
+      node.handler.locals = node.handler.locals || {};
+      node.handler.locals[node.handler.param.name] = true;
     },
     'ImportDefaultSpecifier': declareModuleSpecifier,
     'ImportSpecifier': declareModuleSpecifier,
@@ -144,14 +134,6 @@ function findGlobals(source) {
       if (parents[i].locals && name in parents[i].locals) {
         return;
       }
-    }
-    if (
-      parents[parents.length - 2] &&
-      parents[parents.length - 2].type === 'TryStatement' &&
-      parents[parents.length - 2].handler &&
-      node === parents[parents.length - 2].handler.param
-    ) {
-      return;
     }
     node.parents = parents;
     globals.push(node);

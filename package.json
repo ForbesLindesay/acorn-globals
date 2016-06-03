@@ -17,7 +17,7 @@
     "LICENSE"
   ],
   "dependencies": {
-    "acorn": "^2.1.0"
+    "acorn": "^3.1.0"
   },
   "devDependencies": {
     "testit": "^2.0.2"
