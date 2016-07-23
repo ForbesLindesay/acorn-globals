@@ -20,7 +20,7 @@
     "acorn": "^3.1.0"
   },
   "devDependencies": {
-    "testit": "^2.0.2"
+    "testit": "^2.1.0"
   },
   "scripts": {
     "test": "node test"
