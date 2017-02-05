@@ -20,7 +20,8 @@ var detect = require('acorn-globals');
 
 var src = fs.readFileSync(__dirname + '/input.js', 'utf8');
 
-var scope = detect(src);
+var options = {};
+var scope = detect(src, options);
 console.dir(scope);
 ```
 
@@ -70,6 +71,20 @@ $ node example/detect.js
   { name: 'xyz', nodes: [ [Object] ] } ]
 ```
 
+## Options
+
+  - `includeFileVars`
+
+    Default: `false`
+
+    Include variables declared in the file scope of the JavaScript file.
+    This is useful when using modules that are not automatically wrapped in a closure.
+
+  - `includeFunctionDeclarations`
+
+    Default: `false`
+
+    Include function definitions in the list of globals. Use with `includeFileVars`.
 
 ## License
 

@@ -27,9 +27,14 @@ function reallyParse(source) {
 }
 module.exports = findGlobals;
 module.exports.parse = reallyParse;
-function findGlobals(source) {
+function findGlobals(source, options) {
   var globals = [];
   var ast;
+
+  options = options || {};
+  options.includeFileVars = options.includeFileVars || false;
+  options.includeFunctionDeclarations = options.includeFunctionDeclarations || false;
+
   // istanbul ignore else
   if (typeof source === 'string') {
     ast = reallyParse(source);
@@ -131,8 +136,13 @@ function findGlobals(source) {
       if (name === 'arguments' && declaresArguments(parents[i])) {
         return;
       }
-      if (parents[i].locals && name in parents[i].locals) {
-        return;
+
+      var parentIsGlobalScopeAndEnabled = (options.includeFileVars && parents[i].type === 'Program');
+      var parentIsFunctionDeclarationAndEnabled = (options.includeFunctionDeclarations && parents[i].type === 'FunctionDeclaration' && i === parents.length - 2 && node === parents[i].id);
+      if (!parentIsGlobalScopeAndEnabled && !parentIsFunctionDeclarationAndEnabled) {
+        if (parents[i].locals && name in parents[i].locals) {
+          return;
+        }
       }
     }
     node.parents = parents;

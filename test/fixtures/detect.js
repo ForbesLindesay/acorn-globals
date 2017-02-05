@@ -27,6 +27,8 @@ foo(function () {
 
 });
 
-function beep () {}
+function beep () {
+  function boop() {}
+}
 
 console.log(xyz);
