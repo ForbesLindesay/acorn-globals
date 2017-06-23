@@ -1,5 +1,7 @@
 # acorn-globals
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ForbesLindesay/acorn-globals.svg)](https://greenkeeper.io/)
+
 Detect global variables in JavaScript using acorn
 
 [![Build Status](https://img.shields.io/travis/ForbesLindesay/acorn-globals/master.svg)](https://travis-ci.org/ForbesLindesay/acorn-globals)
