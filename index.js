@@ -22,7 +22,8 @@ function reallyParse(source) {
   return acorn.parse(source, {
     allowReturnOutsideFunction: true,
     allowImportExportEverywhere: true,
-    allowHashBang: true
+    allowHashBang: true,
+    locations: true
   });
 }
 module.exports = findGlobals;
