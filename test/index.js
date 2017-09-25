@@ -10,6 +10,23 @@ function read(file) {
   return fs.readFileSync(path.resolve(__dirname + '/fixtures/', file), 'utf8');
 }
 
+var buildQualifiedVariableName = function(node) {
+  const namePath = [];
+  for (var i = node.parents.length - 1; i >= 0; i--) {
+    const parent = node.parents[i];
+    if (parent.type === "Identifier") {
+      namePath.push(parent.name);
+    } else if (parent.type === "MemberExpression") {
+      namePath.push(parent.property.name || parent.property.value);
+    } else if (parent.type === "ThisExpression") {
+      namePath.push("this");
+    } else {
+      break;
+    }
+  }
+  return namePath.join('.');
+};
+
 test('argument.js - parameters from inline arguments', function () {
   assert.deepEqual(detect(read('argument.js')), []);
 });
@@ -32,6 +49,17 @@ test('detect.js - check locals and globals', function () {
   assert.deepEqual(detect(read('detect.js')).map(function (node) { return node.name; }),
                    ['w', 'foo', 'process', 'console', 'AAA', 'BBB', 'CCC', 'xyz', 'ZZZ', 'BLARG', 'RAWR'].sort());
 });
+test('detect.js - check variable names', function () {
+    assert.deepEqual(detect(read('detect.js')).map(function (node) {
+      return '[' + node.nodes.map(function (n) { return buildQualifiedVariableName(n); }) + ']';
+    }),
+        [
+            '[w.foo,w]', '[foo]', '[process.nextTick]',
+            '[console.log,console.log]', '[AAA.aaa]',
+            '[BBB.bbb]', '[CCC.x]', '[xyz]',
+            '[ZZZ,ZZZ.foo]', '[BLARG]',
+            '[RAWR,RAWR.foo]'].sort());
+});
 test('export.js - Anything that has been imported is not a global', function () {
   assert.deepEqual(detect(read('export.js')).map(function (node) { return node.name; }), ['baz']);
 });
@@ -49,6 +77,18 @@ test('named_arg.js - named argument / parameter', function () {
 });
 test('obj.js - globals on the right-hand of a colon in an object literal', function () {
   assert.deepEqual(detect(read('obj.js')).map(function (node) { return node.name; }), ['bar', 'module']);
+});
+test('properties.js - check variable names', function () {
+
+    assert.deepEqual(detect(read('properties.js')).map(function (node) {
+            return '[' + node.nodes.map(function (n) { return buildQualifiedVariableName(n); }) + ']';
+        }),
+        [
+            '[simple_g]',
+            '[qualified_g]',
+            '[ugly.chained.methodCall,ugly.chained.lookup]',
+            '[uglier.chained.property.lookup]'
+        ].sort());
 });
 test('reserved-words.js - check we do not force into strict mode', function () {
   assert.deepEqual(detect(read('reserved-words.js')).map(function (node) { return node.name; }), ['console']);

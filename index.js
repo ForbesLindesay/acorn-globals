@@ -49,7 +49,7 @@ function findGlobals(source) {
     if (node.id) {
       fn.locals[node.id.name] = true;
     }
-  }
+  };
   var declarePattern = function (node, parent) {
     switch (node.type) {
       case 'Identifier':
@@ -75,11 +75,11 @@ function findGlobals(source) {
       default:
         throw new Error('Unrecognized pattern type: ' + node.type);
     }
-  }
+  };
   var declareModuleSpecifier = function (node, parents) {
     ast.locals = ast.locals || {};
     ast.locals[node.local.name] = true;
-  }
+  };
   walk.ancestor(ast, {
     'VariableDeclaration': function (node, parents) {
       var parent = null;
@@ -135,7 +135,10 @@ function findGlobals(source) {
         return;
       }
     }
-    node.parents = parents;
+    node.parents = [];
+    for (var j = 0; j < parents.length; j++) {
+      node.parents.push(parents[j]);
+    }
     globals.push(node);
   }
   walk.ancestor(ast, {
@@ -147,7 +150,10 @@ function findGlobals(source) {
           return;
         }
       }
-      node.parents = parents;
+      node.parents = [];
+      for (var j = 0; j < parents.length; j++) {
+        node.parents.push(parents[j]);
+      }
       globals.push(node);
     }
   });
