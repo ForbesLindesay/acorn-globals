@@ -1,7 +1,7 @@
 'use strict';
 
 var acorn = require('acorn');
-var walk = require('acorn/dist/walk');
+var walk = require('acorn-walk');
 
 function isScope(node) {
   return node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration' || node.type === 'ArrowFunctionExpression' || node.type === 'Program';
