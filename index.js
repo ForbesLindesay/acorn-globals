@@ -135,10 +135,7 @@ function findGlobals(source) {
         return;
       }
     }
-    node.parents = [];
-    for (var j = 0; j < parents.length; j++) {
-      node.parents.push(parents[j]);
-    }
+    node.parents = parents.slice();
     globals.push(node);
   }
   walk.ancestor(ast, {
@@ -150,10 +147,7 @@ function findGlobals(source) {
           return;
         }
       }
-      node.parents = [];
-      for (var j = 0; j < parents.length; j++) {
-        node.parents.push(parents[j]);
-      }
+      node.parents = parents.slice();
       globals.push(node);
     }
   });
