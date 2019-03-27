@@ -93,6 +93,9 @@ test('properties.js - check variable names', function () {
 test('reserved-words.js - check we do not force into strict mode', function () {
   assert.deepEqual(detect(read('reserved-words.js')).map(function (node) { return node.name; }), ['console']);
 });
+test('rest.js - ES2015 rest', function () {
+  assert.deepEqual(detect(read('rest.js')), []);
+});
 test('rest-argument.js - ES2015 rest argument', function () {
   assert.deepEqual(detect(read('rest-argument.js')), []);
 });
