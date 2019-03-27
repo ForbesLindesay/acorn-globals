@@ -61,7 +61,7 @@ function findGlobals(source, options) {
         break;
       case 'ObjectPattern':
         node.properties.forEach(function (node) {
-          declarePattern(node.value, parent);
+          declarePattern(node.value || node.argument, parent);
         });
         break;
       case 'ArrayPattern':
