@@ -45,6 +45,9 @@ test('default-argument.js - ES2015 default argument', function () {
 test('destructuring.js - ES2015 variable destructuring', function () {
   assert.deepEqual(detect(read('destructuring.js')).map(function (node) { return node.name; }), ['g']);
 });
+test('destructuring-rest.js - ES2015 destructuring  rest', function () {
+  assert.deepEqual(detect(read('destructuring-rest.js')), []);
+});
 test('detect.js - check locals and globals', function () {
   assert.deepEqual(detect(read('detect.js')).map(function (node) { return node.name; }),
                    ['w', 'foo', 'process', 'console', 'AAA', 'BBB', 'CCC', 'xyz', 'ZZZ', 'BLARG', 'RAWR'].sort());
@@ -92,9 +95,6 @@ test('properties.js - check variable names', function () {
 });
 test('reserved-words.js - check we do not force into strict mode', function () {
   assert.deepEqual(detect(read('reserved-words.js')).map(function (node) { return node.name; }), ['console']);
-});
-test('rest.js - ES2015 rest', function () {
-  assert.deepEqual(detect(read('rest.js')), []);
 });
 test('rest-argument.js - ES2015 rest argument', function () {
   assert.deepEqual(detect(read('rest-argument.js')), []);
