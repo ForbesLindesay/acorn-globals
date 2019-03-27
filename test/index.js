@@ -42,11 +42,11 @@ test('class.js - ES2015 classes', function () {
 test('default-argument.js - ES2015 default argument', function () {
   assert.deepEqual(detect(read('default-argument.js')).map(function (node) { return node.name; }), ['c', 'h', 'j', 'k']);
 });
+test('destructuring-rest.js - ES2015 destructuring rest', function () {
+  assert.deepEqual(detect(read('destructuring-rest.js')), []);
+});
 test('destructuring.js - ES2015 variable destructuring', function () {
   assert.deepEqual(detect(read('destructuring.js')).map(function (node) { return node.name; }), ['g']);
-});
-test('destructuring-rest.js - ES2015 destructuring  rest', function () {
-  assert.deepEqual(detect(read('destructuring-rest.js')), []);
 });
 test('detect.js - check locals and globals', function () {
   assert.deepEqual(detect(read('detect.js')).map(function (node) { return node.name; }),
