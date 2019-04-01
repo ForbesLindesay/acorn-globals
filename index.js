@@ -105,7 +105,9 @@ function findGlobals(source, options) {
         }
       }
       parent.locals = parent.locals || {};
-      parent.locals[node.id.name] = true;
+      if (node.id) {
+        parent.locals[node.id.name] = true;
+      }
       declareFunction(node);
     },
     'Function': declareFunction,
@@ -117,7 +119,9 @@ function findGlobals(source, options) {
         }
       }
       parent.locals = parent.locals || {};
-      parent.locals[node.id.name] = true;
+      if (node.id) {
+        parent.locals[node.id.name] = true;
+      }
     },
     'TryStatement': function (node) {
       if (node.handler === null) return;
