@@ -66,6 +66,9 @@ test('detect.js - check variable names', function () {
 test('export.js - Anything that has been imported is not a global', function () {
   assert.deepEqual(detect(read('export.js')).map(function (node) { return node.name; }), ['baz']);
 });
+test('export-default-anonymous.js - export anonymous function/class as default', function () {
+  assert.deepEqual(detect(read('export-default-anonymous.js')), []);
+});
 test('import.js - Anything that has been imported is not a global', function () {
   assert.deepEqual(detect(read('import.js')).map(function (node) { return node.name; }), ['whatever']);
 });
