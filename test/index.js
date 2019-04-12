@@ -42,6 +42,9 @@ test('class.js - ES2015 classes', function () {
 test('default-argument.js - ES2015 default argument', function () {
   assert.deepEqual(detect(read('default-argument.js')).map(function (node) { return node.name; }), ['c', 'h', 'j', 'k']);
 });
+test('destructuring-rest.js - ES2015 destructuring rest', function () {
+  assert.deepEqual(detect(read('destructuring-rest.js')), []);
+});
 test('destructuring.js - ES2015 variable destructuring', function () {
   assert.deepEqual(detect(read('destructuring.js')).map(function (node) { return node.name; }), ['g']);
 });
@@ -62,6 +65,12 @@ test('detect.js - check variable names', function () {
 });
 test('export.js - Anything that has been imported is not a global', function () {
   assert.deepEqual(detect(read('export.js')).map(function (node) { return node.name; }), ['baz']);
+});
+test('export-default-anonymous-class.js - export anonymous class as default', function () {
+  assert.deepEqual(detect(read('export-default-anonymous-class.js')), []);
+});
+test('export-default-anonymous-function.js - export anonymous function as default', function () {
+  assert.deepEqual(detect(read('export-default-anonymous-function.js')), []);
 });
 test('import.js - Anything that has been imported is not a global', function () {
   assert.deepEqual(detect(read('import.js')).map(function (node) { return node.name; }), ['whatever']);

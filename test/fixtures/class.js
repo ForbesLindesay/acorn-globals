@@ -11,7 +11,11 @@ class MyClass extends SuperClass {
     }
     c(d, e) {
         d = e;
-        return super(d);
+        return super.constructor(d);
+    }
+    static c(d, e) {
+        d = e;
+        return super.prototype.constructor(d);
     }
 }
 
