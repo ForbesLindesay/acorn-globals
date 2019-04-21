@@ -114,7 +114,7 @@ function findGlobals(source, options) {
     'ClassDeclaration': function (node, parents) {
       var parent = null;
       for (var i = parents.length - 2; i >= 0 && parent === null; i--) {
-        if (isScope(parents[i])) {
+        if (isBlockScope(parents[i])) {
           parent = parents[i];
         }
       }
