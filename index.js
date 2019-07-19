@@ -55,7 +55,7 @@ function findGlobals(source, options) {
     }
   };
   var declareClass = function (node) {
-    node.locals = fn.locals || Object.create(null);
+    node.locals = node.locals || Object.create(null);
     if (node.id) {
       node.locals[node.id.name] = true;
     }
