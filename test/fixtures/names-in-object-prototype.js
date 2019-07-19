@@ -1,9 +1,9 @@
 {
-  let toString;
-  toString;
+  let valueOf;
+  valueOf;
 }
-let valueOf;
-valueOf;
+let toString;
+toString;
 hasOwnProperty;
 constructor;
 __proto__;
