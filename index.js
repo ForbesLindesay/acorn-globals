@@ -128,6 +128,7 @@ function findGlobals(source, options) {
       if (node.id) {
         parent.locals[node.id.name] = true;
       }
+      declareClass(node);
     },
     'Class': declareClass,
     'TryStatement': function (node) {
