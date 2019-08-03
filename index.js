@@ -54,6 +54,12 @@ function findGlobals(source, options) {
       fn.locals[node.id.name] = true;
     }
   };
+  var declareClass = function (node) {
+    node.locals = node.locals || Object.create(null);
+    if (node.id) {
+      node.locals[node.id.name] = true;
+    }
+  };
   var declarePattern = function (node, parent) {
     switch (node.type) {
       case 'Identifier':
@@ -122,7 +128,9 @@ function findGlobals(source, options) {
       if (node.id) {
         parent.locals[node.id.name] = true;
       }
+      declareClass(node);
     },
+    'Class': declareClass,
     'TryStatement': function (node) {
       if (node.handler === null) return;
       node.handler.locals = node.handler.locals || {};
