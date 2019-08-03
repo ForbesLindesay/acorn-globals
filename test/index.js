@@ -87,6 +87,9 @@ test('multiple-exports.js - multiple-exports', function () {
 test('named_arg.js - named argument / parameter', function () {
   assert.deepEqual(detect(read('named_arg.js')), []);
 });
+test('names-in-object-prototype.js - check names in object prototype', function () {
+  assert.deepEqual(detect(read('names-in-object-prototype.js')).map(function (node) { return node.name; }).sort(), ['__proto__', 'constructor', 'hasOwnProperty']);
+});
 test('obj.js - globals on the right-hand of a colon in an object literal', function () {
   assert.deepEqual(detect(read('obj.js')).map(function (node) { return node.name; }), ['bar', 'module']);
 });

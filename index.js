@@ -46,7 +46,7 @@ function findGlobals(source, options) {
   }
   var declareFunction = function (node) {
     var fn = node;
-    fn.locals = fn.locals || {};
+    fn.locals = fn.locals || Object.create(null);
     node.params.forEach(function (node) {
       declarePattern(node, fn);
     });
@@ -87,7 +87,7 @@ function findGlobals(source, options) {
     }
   };
   var declareModuleSpecifier = function (node, parents) {
-    ast.locals = ast.locals || {};
+    ast.locals = ast.locals || Object.create(null);
     ast.locals[node.local.name] = true;
   };
   walk.ancestor(ast, {
@@ -98,7 +98,7 @@ function findGlobals(source, options) {
           parent = parents[i];
         }
       }
-      parent.locals = parent.locals || {};
+      parent.locals = parent.locals || Object.create(null);
       node.declarations.forEach(function (declaration) {
         declarePattern(declaration.id, parent);
       });
@@ -110,7 +110,7 @@ function findGlobals(source, options) {
           parent = parents[i];
         }
       }
-      parent.locals = parent.locals || {};
+      parent.locals = parent.locals || Object.create(null);
       if (node.id) {
         parent.locals[node.id.name] = true;
       }
@@ -124,7 +124,7 @@ function findGlobals(source, options) {
           parent = parents[i];
         }
       }
-      parent.locals = parent.locals || {};
+      parent.locals = parent.locals || Object.create(null);
       if (node.id) {
         parent.locals[node.id.name] = true;
       }
@@ -133,7 +133,7 @@ function findGlobals(source, options) {
     'Class': declareClass,
     'TryStatement': function (node) {
       if (node.handler === null) return;
-      node.handler.locals = node.handler.locals || {};
+      node.handler.locals = node.handler.locals || Object.create(null);
       node.handler.locals[node.handler.param.name] = true;
     },
     'ImportDefaultSpecifier': declareModuleSpecifier,
@@ -167,7 +167,7 @@ function findGlobals(source, options) {
       globals.push(node);
     }
   });
-  var groupedGlobals = {};
+  var groupedGlobals = Object.create(null);
   globals.forEach(function (node) {
     var name = node.type === 'ThisExpression' ? 'this' : node.name;
     groupedGlobals[name] = (groupedGlobals[name] || []);
