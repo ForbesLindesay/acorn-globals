@@ -37,7 +37,7 @@ test('assign_implicit.js - assign from an implicit global', function () {
   assert.deepEqual(detect(read('assign_implicit.js')).map(function (node) { return node.name; }), ['bar']);
 });
 test('catch-pattern.js - pattern in catch', function () {
-  assert.deepEqual(detect(read('class.js')).map(function (node) { return node.name; }), []);
+  assert.deepEqual(detect(read('catch-pattern.js')).map(function (node) { return node.name; }), []);
 });
 test('class.js - ES2015 classes', function () {
   assert.deepEqual(detect(read('class.js')).map(function (node) { return node.name; }), ['G', 'OtherClass_', 'SuperClass', 'this'].sort());
