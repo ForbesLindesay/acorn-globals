@@ -1,2 +1,2 @@
 try { }
-catch ({ message }) { message; undefined; }
+catch ({ message }) { message; }
