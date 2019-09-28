@@ -14,10 +14,6 @@ function declaresArguments(node) {
   return node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration';
 }
 
-function declaresThis(node) {
-  return node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration';
-}
-
 function reallyParse(source, options) {
   var parseOptions = Object.assign({}, options,
     {
@@ -159,9 +155,9 @@ function findGlobals(source, options) {
     'Identifier': identifier,
     'ThisExpression': function (node, parents) {
       for (var i = 0; i < parents.length; i++) {
-        if (declaresThis(parents[i])) {
-          return;
-        }
+        var parent = parents[i];
+        if ( parent.type === 'FunctionExpression' || parent.type === 'FunctionDeclaration' ) { return; }
+        if ( parent.type === 'FieldDefinition' && parents[i+1]===parent.value ) { return; }
       }
       node.parents = parents.slice();
       globals.push(node);
