@@ -132,7 +132,7 @@ function findGlobals(source, options) {
     },
     'Class': declareClass,
     'TryStatement': function (node) {
-      if (node.handler === null) return;
+      if (node.handler === null || node.handler.param === null) return;
       node.handler.locals = node.handler.locals || Object.create(null);
       declarePattern(node.handler.param, node.handler);
     },
