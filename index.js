@@ -157,7 +157,7 @@ function findGlobals(source, options) {
       for (var i = 0; i < parents.length; i++) {
         var parent = parents[i];
         if ( parent.type === 'FunctionExpression' || parent.type === 'FunctionDeclaration' ) { return; }
-        if ( parent.type === 'FieldDefinition' && parents[i+1]===parent.value ) { return; }
+        if ( parent.type === 'PropertyDefinition' && parents[i+1]===parent.value ) { return; }
       }
       node.parents = parents.slice();
       globals.push(node);
