@@ -4,7 +4,7 @@ Detect global variables in JavaScript using acorn
 
 [Get supported acorn-globals with the Tidelift Subscription](https://tidelift.com/subscription/pkg/npm-acorn_globals?utm_source=npm-acorn-globals&utm_medium=referral&utm_campaign=readme)
 
-[![Build Status](https://img.shields.io/github/workflow/status/ForbesLindesay/acorn-globals/Test/master?style=for-the-badge)](https://github.com/ForbesLindesay/acorn-globals/actions?query=workflow%3ATest+branch%3Amaster)
+[![Build Status](https://img.shields.io/github/workflow/status/ForbesLindesay/acorn-globals/Publish%20Canary/master?style=for-the-badge)](https://github.com/ForbesLindesay/acorn-globals/actions?query=workflow%3APublish%20Canary+branch%3Amaster)
 [![Rolling Versions](https://img.shields.io/badge/Rolling%20Versions-Enabled-brightgreen?style=for-the-badge)](https://rollingversions.com/ForbesLindesay/acorn-globals)
 [![NPM version](https://img.shields.io/npm/v/acorn-globals?style=for-the-badge)](https://www.npmjs.com/package/acorn-globals)
 
