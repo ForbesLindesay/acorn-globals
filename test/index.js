@@ -52,6 +52,9 @@ test('class.js - ES2015 classes', function () {
 test('class-expression.js - class as expression', function () {
   assert.deepEqual(detect(read('class-expression.js')), []);
 });
+test('class-field-definition-this.js - this in field value', function () {
+  assert.deepEqual(detect(read('class-field-definition-this.js')), []);
+});
 test('default-argument.js - ES2015 default argument', function () {
   assert.deepEqual(detect(read('default-argument.js')).map(nameOf), ['c', 'h', 'j', 'k']);
 });
