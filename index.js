@@ -15,12 +15,14 @@ function declaresArguments(node) {
 }
 
 function reallyParse(source, options) {
-  var parseOptions = Object.assign({}, options,
+  var parseOptions = Object.assign(
     {
       allowReturnOutsideFunction: true,
       allowImportExportEverywhere: true,
-      allowHashBang: true
-    }
+      allowHashBang: true,
+      ecmaVersion: "latest"
+    },
+    options
   );
   return acorn.parse(source, parseOptions);
 }
