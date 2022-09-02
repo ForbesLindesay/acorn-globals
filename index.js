@@ -7,7 +7,8 @@ function isScope(node) {
   return node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration' || node.type === 'ArrowFunctionExpression' || node.type === 'Program';
 }
 function isBlockScope(node) {
-  return node.type === 'BlockStatement' || isScope(node);
+  // The body of switch statement is a block.
+  return node.type === 'BlockStatement' || node.type === 'SwitchStatement' || isScope(node);
 }
 
 function declaresArguments(node) {

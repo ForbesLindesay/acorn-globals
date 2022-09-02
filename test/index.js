@@ -138,6 +138,9 @@ test('return_hash.js - named argument / parameter', function () {
 test('right_hand.js - globals on the right-hand of assignment', function () {
   assert.deepEqual(detect(read('right_hand.js')).map(nameOf), [ 'exports', '__dirname', '__filename' ].sort());
 });
+test('switch-statement.js - id in outer scope of switch is a global', function () {
+  assert.deepEqual(detect(read('switch-statement.js')).map(nameOf), ['a']);
+});
 test('try_catch.js - the exception in a try catch block is a local', function () {
   assert.deepEqual(detect(read('try_catch.js')), []);
 });
