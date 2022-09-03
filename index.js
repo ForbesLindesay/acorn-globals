@@ -3,6 +3,13 @@
 var acorn = require('acorn');
 var walk = require('acorn-walk');
 
+function isFunctionScope(node) {
+  return node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration' || node.type === 'ArrowFunctionExpression';
+}
+function isBlockLevelScope(node) {
+  // The body of switch statement is a block.
+  return node.type === 'BlockStatement' || node.type === 'SwitchStatement' || isFunctionScope(node);
+}
 function isScope(node) {
   return node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration' || node.type === 'ArrowFunctionExpression' || node.type === 'Program';
 }
@@ -33,6 +40,7 @@ function findGlobals(source, options) {
   options = options || {};
   var globals = [];
   var ast;
+  var { inBrowser } = options;
   // istanbul ignore else
   if (typeof source === 'string') {
     ast = reallyParse(source, options);
@@ -43,6 +51,13 @@ function findGlobals(source, options) {
   if (!(ast && typeof ast === 'object' && ast.type === 'Program')) {
     throw new TypeError('Source must be either a string of JavaScript or an acorn AST');
   }
+  var inModule = ast.sourceType === "module";
+  var index = ast.body.findIndex(
+    statement => statement.type !== "ExpressionStatement" || !statement.directive
+  );
+  var inStrictMode = ast.body.slice(0, index === -1 ? ast.body.length : index).find(
+    statement => statement.directive === "use strict"
+  ) !== undefined;
   var declareFunction = function (node) {
     var fn = node;
     fn.locals = fn.locals || Object.create(null);
@@ -89,29 +104,35 @@ function findGlobals(source, options) {
     ast.locals = ast.locals || Object.create(null);
     ast.locals[node.local.name] = true;
   };
+  const isVarDeclarationScope = !inBrowser || inModule ? isScope : isFunctionScope;
+  const isFunctionIdenitifierScope = !inBrowser || inModule ? isScope : isBlockLevelScope;
   walk.ancestor(ast, {
     'VariableDeclaration': function (node, parents) {
       var parent = null;
       for (var i = parents.length - 1; i >= 0 && parent === null; i--) {
-        if (node.kind === 'var' ? isScope(parents[i]) : isBlockScope(parents[i])) {
+        if ((node.kind === "var" ? isVarDeclarationScope : isBlockScope)(parents[i])) {
           parent = parents[i];
         }
       }
-      parent.locals = parent.locals || Object.create(null);
-      node.declarations.forEach(function (declaration) {
-        declarePattern(declaration.id, parent);
-      });
+      if (parent) {
+        parent.locals = parent.locals || Object.create(null);
+        node.declarations.forEach(declaration => {
+          declarePattern(declaration.id, parent);
+        });
+      }
     },
     'FunctionDeclaration': function (node, parents) {
       var parent = null;
       for (var i = parents.length - 2; i >= 0 && parent === null; i--) {
-        if (isScope(parents[i])) {
+        if (isFunctionIdenitifierScope(parents[i])) {
           parent = parents[i];
         }
       }
-      parent.locals = parent.locals || Object.create(null);
-      if (node.id) {
-        parent.locals[node.id.name] = true;
+      if (parent) {
+        parent.locals = parent.locals || Object.create(null);
+        if (node.id) {
+          parent.locals[node.id.name] = true;
+        }
       }
       declareFunction(node);
     },
@@ -153,8 +174,31 @@ function findGlobals(source, options) {
     node.parents = parents.slice();
     globals.push(node);
   }
+  function variablePattern(node, parents) {
+    var { name } = node;
+    if (name === 'undefined') return;
+    for (var i = parents.length - 2; i >= 0; --i) {
+      var { type } = parents[i];
+      if (type !== 'ObjectPattern' && type !== 'ArrayPattern' && type !== 'RestElement' && type !== 'AssignmentPattern') {
+        if (type === 'VariableDeclarator') {
+          return;
+        }
+        break;
+      }
+    }
+    for (let i = 0; i < parents.length; i++) {
+      if (name === 'arguments' && declaresArguments(parents[i])) {
+        return;
+      }
+      if (parents[i].locals && name in parents[i].locals) {
+        return;
+      }
+    }
+    node.parents = parents.slice();
+    globals.push(node);
+  }
   walk.ancestor(ast, {
-    'VariablePattern': identifier,
+    'VariablePattern': variablePattern,
     'Identifier': identifier,
     'ThisExpression': function (node, parents) {
       for (var i = 0; i < parents.length; i++) {
