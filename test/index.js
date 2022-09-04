@@ -98,7 +98,7 @@ test('export-default-anonymous-function.js - export anonymous function as defaul
   assert.deepEqual(detect(read('export-default-anonymous-function.js')), []);
 });
 test('globally-declared-identifiers.js - var and function declaration outside functions create globals', function () {
-  assert.deepEqual(detect(read('globally-declared-identifiers.js'), {inBrowser: true}).map(nameOf), ['a','b','c','d','f']);
+  assert.deepEqual(detect(read('globally-declared-identifiers.js'), {inBrowser: true}).map(nameOf), ['a','b','c','d','e','g']);
 });
 test('import.js - Anything that has been imported is not a global', function () {
   assert.deepEqual(detect(read('import.js')).map(nameOf), ['whatever']);

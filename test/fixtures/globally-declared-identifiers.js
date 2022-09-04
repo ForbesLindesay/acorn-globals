@@ -8,9 +8,11 @@ a;
 c;
 function d() {}
 d;
+function e() {}
 {
-  function e() {}
   e;
   function f() {}
+  f;
+  function g() {}
 }
-f;
+g;
